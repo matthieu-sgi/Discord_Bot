@@ -40,19 +40,20 @@ client.on('ready',() =>{
     }).catch(err =>{
         console.log("ERROR" + err);
     })
+    
 })
 
 client.on('messageReactionAdd',(reaction,user) =>{
     console.log("Reaction ajouté");
     if(reaction.message.id === id_message){
-        if(reaction.emoji.name === '😂'){ //Hanyang
+        if(reaction.emoji.name === '😁'){ //Hanyang
            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
-           member.roles.add(hanyang_role);
-           /*member.roles.add(hanyang_role).then(mbr => {
+           
+           member.roles.add('813712419007234090').then(mbr => {
                console.log("Role attribué avec succès pour" + mbr.displayName);
            }).catch(() => {
                console.log("Role pas attribué");
-           });*/
+           });
         } else if(reaction.emoji.name === "two"){ //Inha
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(inha_role).then(mbr => {
