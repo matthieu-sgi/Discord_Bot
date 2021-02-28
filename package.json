@@ -1,0 +1,22 @@
+{
+  "name": "discord_bot",
+  "version": "1.0.0",
+  "description": "Learning how to code Discord Bot",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sn00wden/Discord_Bot.git"
+  },
+  "author": "sn00wden",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sn00wden/Discord_Bot/issues"
+  },
+  "homepage": "https://github.com/sn00wden/Discord_Bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
+}
