@@ -58,21 +58,21 @@ client.on('messageReactionAdd',(reaction,user) =>{
            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
            
            member.roles.add('813712419007234090').then(mbr => {
-               console.log("Role attribué avec succès pour" + mbr.displayName);
+               console.log("Role attribué avec succès pour " + mbr.displayName);
            }).catch(() => {
                console.log("Role pas attribué");
            });
         } else if(reaction.emoji.name === '2️⃣'){ //Inha
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(inha_role).then(mbr => {
-                console.log("Role attribué avec succès pour" + mbr.displayName);
+                console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             });
          }else if(reaction.emoji.name === '3️⃣'){ //Chung-Ang
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(chungang_role).then(mbr => {
-                console.log("Role attribué avec succès pour" + mbr.displayName);
+                console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             }); 
@@ -80,21 +80,21 @@ client.on('messageReactionAdd',(reaction,user) =>{
         else if(reaction.emoji.name === '4️⃣'){ //SKKU
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(skku_role).then(mbr => {
-                console.log("Role attribué avec succès pour" + mbr.displayName);
+                console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             }); 
         }else if(reaction.emoji.name === '5️⃣'){ //Seoultech
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(seoultech_role).then(mbr => {
-                console.log("Role attribué avec succès pour" + mbr.displayName);
+                console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             }); 
         }else if(reaction.emoji.name === '6️⃣'){ //Kumoh
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(kumoh_role).then(mbr => {
-                console.log("Role attribué avec succès pour" + mbr.displayName);
+                console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             }); 
