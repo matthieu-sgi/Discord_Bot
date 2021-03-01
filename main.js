@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
-const pw = require('./private.js');
-const client = new Discord.Client();
 
+const client = new Discord.Client();
+require('dotenv').config();
 const prefix = '-';
 const id_channel = "813722716175335474";
 const id_message = "813724982130507816";
@@ -127,4 +127,4 @@ client.on('message', message =>{
    
 });
 
-client.login(pw.token);
+client.login(process.env.TOKEN);

@@ -10,7 +10,7 @@ __pycache__/
 .Python
 build/
 node_modules/
-private.js
+private.env
 ./private.js
 develop-eggs/
 dist/
