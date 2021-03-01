@@ -3,9 +3,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 require('dotenv').config();
 const prefix = '-';
-const id_channel = "813722716175335474";
-const id_message = "813724982130507816";
-
+const id_channel = process.env.ID_CHANNEL;
+const id_message = process.env.ID_MESSAGE;
+const id_serv = process.env.ID_SERV;
 
 //id role is
 const hanyang_role = "813712419007234090" ;
@@ -35,7 +35,8 @@ client.once('end',() =>{
 });
 
 client.on('ready',() =>{
-    client.guilds.cache.find(guild =>guild.id === "813711622010830868").channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message).then(message =>{
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message).then(message =>{
+        
         console.log("message choix université ajouté");
         message.react('1️⃣');
         message.react('2️⃣');
@@ -53,11 +54,12 @@ client.on('ready',() =>{
 
 client.on('messageReactionAdd',(reaction,user) =>{
     console.log("Reaction ajouté");
-    if(reaction.message.id === id_message && !user.bot){
+    console.log(user);
+    if(reaction.message.id === id_message && !user.bot && user != hanyang_role){
         if(reaction.emoji.name === '1️⃣'){ //Hanyang
            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
            
-           member.roles.add('813712419007234090').then(mbr => {
+           member.roles.add(hanyang_role).then(mbr => {
                console.log("Role attribué avec succès pour " + mbr.displayName);
            }).catch(() => {
                console.log("Role pas attribué");
