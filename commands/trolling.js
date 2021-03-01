@@ -3,6 +3,6 @@ module.exports = {
     description: 'trolling command',
     execute(message,args) {
         
-            message.channel.send('Il é tro bô');
+            message.channel.send('La salope');
     }
 }
