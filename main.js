@@ -72,7 +72,8 @@ client.on('messageReactionAdd',(reaction,user) =>{
          }else if(reaction.emoji.name === '3️⃣'){ //Chung-Ang
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(chungang_role).then(mbr => {
-                console.log("Role attribué avec succès pour " + mbr.displayName);
+                console.log("Role attribué avec succès pour "
+                 + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             }); 
