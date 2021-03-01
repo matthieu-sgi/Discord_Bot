@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-
+const pw = require('./private.js');
 const client = new Discord.Client();
 
 const prefix = '-';
@@ -127,4 +127,4 @@ client.on('message', message =>{
    
 });
 
-client.login(password);
+client.login(pw.token);
