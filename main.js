@@ -126,6 +126,10 @@ client.on('message', message =>{
 
     }else if(command == 'henri' || command == 'Henri' || command == 'Henry'|| command == 'henry'){
         client.command.get('trolling').execute(message,args);
+    }else if(command == 'help' || command == 'Help' || command == 'Commands' || command == 'Command'|| command == 'commands' || command == 'command'){
+        client.command.get('help').execute(message,args);
+    }else if(command == 'tennis' || command == 'Tennis' ){
+        client.command.get('tennis').execute(message,args);
     }
    
 });
