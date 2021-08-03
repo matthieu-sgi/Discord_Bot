@@ -4,16 +4,18 @@ const client = new Discord.Client();
 require('dotenv').config();
 const prefix = '-';
 const id_channel = process.env.ID_CHANNEL;
-const id_message = process.env.ID_MESSAGE;
+const id_message_uni = process.env.ID_MESSAGE_UNI;
 const id_serv = process.env.ID_SERV;
+const id_message_anciens = process.env.ID_MESSAGE_ANCIENS;
 
-//id role is
+//id role 
 const hanyang_role = "813712419007234090" ;
 const inha_role = "813712674771697665" ;
 const chungang_role = "813712613346902068";
 const skku_role = "813713401641566238";
 const seoultech_role = "813713484793511967";
 const kumoh_role = "813713287484932106";
+const ancient_role = "818779490687778818";
 
 const fs = require('fs');
 
@@ -35,7 +37,7 @@ client.once('end',() =>{
 });
 
 client.on('ready',() =>{
-    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message).then(message =>{
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_uni).then(message =>{
         
         console.log("message choix université ajouté");
         message.react('1️⃣');
@@ -48,14 +50,20 @@ client.on('ready',() =>{
         console.log("ERROR" + err);
     })
     
-    
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_anciens).then(message =>{
+        
+        console.log("message ancien ajouté");
+        message.react('🧓');
+        
+    }).catch(err =>{
+        console.log("ERROR" + err);
+    })
     
 })
 
 client.on('messageReactionAdd',(reaction,user) =>{
     console.log("Reaction ajouté");
-    console.log(user);
-    if(reaction.message.id === id_message && !user.bot && user != hanyang_role){
+    if(reaction.message.id === id_message_uni && !user.bot){
         if(reaction.emoji.name === '1️⃣'){ //Hanyang
            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
            
@@ -108,6 +116,20 @@ client.on('messageReactionAdd',(reaction,user) =>{
             
         
     }
+    if(reaction.message.id === id_message_anciens && !user.bot){
+        if(reaction.emoji.name === '🧓'){ //anciens
+           var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+           
+           member.roles.add(ancient_role).then(mbr => {
+               console.log("Role attribué avec succès pour " + mbr.displayName);
+           }).catch(() => {
+               console.log("Role pas attribué");
+           });
+        }
+        if(!user.bot){
+            reaction.users.remove(user.id);}
+    }
+
 })
 
 client.on('messageReactionRemove',(reaction,user) =>{
