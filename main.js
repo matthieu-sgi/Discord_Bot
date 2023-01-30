@@ -1,32 +1,30 @@
-const Discord = require('discord.js');
+const {Client,Events, GatewayIntentBits} = require('discord.js');
 
-const client = new Discord.Client();
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions] });
 require('dotenv').config();
 const prefix = '-';
 const id_channel = process.env.ID_CHANNEL;
-const id_message_uni = process.env.ID_MESSAGE_UNI;
 const id_serv = process.env.ID_SERV;
-const id_message_anciens = process.env.ID_MESSAGE_ANCIENS;
+
+//id message
+
+const id_message_createch = '1069692895017324624'
+const id_message_roleLOL = '1069692998855692328'
+const id_message_yuumi = '1069693404897878078'
+
 
 //id role 
-const hanyang_role = "813712419007234090" ;
-const inha_role = "813712674771697665" ;
-const chungang_role = "813712613346902068";
-const skku_role = "813713401641566238";
-const seoultech_role = "813713484793511967";
-const kumoh_role = "813713287484932106";
-const ancient_role = "818779490687778818";
+const supp_role = "1069687295596318801" ;
+const mid_role = "1069687269184778260" ;
+const jng_role = "1069687202327580794";
+const top_role = "1069687176343863347";
+const adc_role = "1069687134434361405";
+const createch_role = "1069643173950935061";
+const intrus_role = "1069643034435780708";
+const yuumi_role = "1069645562439282778 ";
 
 const fs = require('fs');
 
-client.command = new Discord.Collection();
-
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-
-for(const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    client.command.set(command.name, command);
-}
 
 client.once('ready',() =>{
     console.log("Bot is online !")
@@ -37,74 +35,75 @@ client.once('end',() =>{
 });
 
 client.on('ready',() =>{
-    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_uni).then(message =>{
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_createch).then(message =>{
         
-        console.log("message choix université ajouté");
-        message.react('1️⃣');
-        message.react('2️⃣');
-        message.react('3️⃣');
-        message.react('4️⃣');
-        message.react('5️⃣');
-        message.react('6️⃣');
+        console.log("message choix createch message ajouté");
+        message.react('👍');
+        message.react('👎');
     }).catch(err =>{
         console.log("ERROR" + err);
     })
     
-    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_anciens).then(message =>{
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_roleLOL).then(message =>{
         
-        console.log("message ancien ajouté");
-        message.react('🧓');
+        console.log("message role ajouté");
+        message.react('⬆️');
+        message.react('🌴');
+        message.react('↗️');
+        message.react('⬇️');
+        message.react('⛑️');
         
     }).catch(err =>{
         console.log("ERROR" + err);
     })
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_yuumi).then(message =>{
+            
+            console.log("message yuumi ajouté");
+            message.react('🐱');
+            
+        }).catch(err =>{
+            console.log("ERROR" + err);
+        })
     
 })
 
-client.on('messageReactionAdd',(reaction,user) =>{
+client.on(Events.MessageReactionAdd,async (reaction,user) =>{
     console.log("Reaction ajouté");
-    if(reaction.message.id === id_message_uni && !user.bot){
-        if(reaction.emoji.name === '1️⃣'){ //Hanyang
+    if(reaction.message.id === id_message_roleLOL && !user.bot){
+        if(reaction.emoji.name === '⬆️'){ //TOP
            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
            
-           member.roles.add(hanyang_role).then(mbr => {
+           member.roles.add(top_role).then(mbr => {
                console.log("Role attribué avec succès pour " + mbr.displayName);
            }).catch(() => {
                console.log("Role pas attribué");
            });
-        } else if(reaction.emoji.name === '2️⃣'){ //Inha
+        } else if(reaction.emoji.name === '🌴'){ //JNG
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
-            member.roles.add(inha_role).then(mbr => {
+            member.roles.add(jng_role).then(mbr => {
                 console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             });
-         }else if(reaction.emoji.name === '3️⃣'){ //Chung-Ang
+         }else if(reaction.emoji.name === '↗️'){ //MID
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
-            member.roles.add(chungang_role).then(mbr => {
+            member.roles.add(mid_role).then(mbr => {
                 console.log("Role attribué avec succès pour "
                  + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             }); 
         }
-        else if(reaction.emoji.name === '4️⃣'){ //SKKU
+        else if(reaction.emoji.name === '⬇️'){ //ADC
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
-            member.roles.add(skku_role).then(mbr => {
+            member.roles.add(adc_role).then(mbr => {
                 console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             }); 
-        }else if(reaction.emoji.name === '5️⃣'){ //Seoultech
+        }else if(reaction.emoji.name === '⛑️'){ //SUPP
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
-            member.roles.add(seoultech_role).then(mbr => {
-                console.log("Role attribué avec succès pour " + mbr.displayName);
-            }).catch(() => {
-                console.log("Role pas attribué");
-            }); 
-        }else if(reaction.emoji.name === '6️⃣'){ //Kumoh
-            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
-            member.roles.add(kumoh_role).then(mbr => {
+            member.roles.add(supp_role).then(mbr => {
                 console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
@@ -116,14 +115,35 @@ client.on('messageReactionAdd',(reaction,user) =>{
             
         
     }
-    if(reaction.message.id === id_message_anciens && !user.bot){
-        if(reaction.emoji.name === '🧓'){ //anciens
+    if(reaction.message.id === id_message_createch && !user.bot){
+        if(reaction.emoji.name === '👎'){ // non createch
            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
            
-           member.roles.add(ancient_role).then(mbr => {
+           member.roles.add(intrus_role).then(mbr => {
                console.log("Role attribué avec succès pour " + mbr.displayName);
            }).catch(() => {
                console.log("Role pas attribué");
+           });
+        }else if(reaction.emoji.name === '👍'){ // createch
+            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+            member.roles.add(createch_role).then(mbr => {
+                console.log("Role attribué avec succès pour " + mbr.displayName);
+            }).catch(() => {
+                console.log("Role pas attribué");
+            });
+            }
+        if(!user.bot){
+            reaction.users.remove(user.id);}
+    }
+
+    if(reaction.message.id === id_message_yuumi && !user.bot){
+        if(reaction.emoji.name === '🐱'){ // yuumi
+           var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+           
+           member.roles.add(yuumi_role).then(mbr => {
+               console.log("Role attribué avec succès pour " + mbr.displayName);
+           }).catch(err => {
+               console.log("Role pas attribué" + err);
            });
         }
         if(!user.bot){
@@ -136,24 +156,24 @@ client.on('messageReactionRemove',(reaction,user) =>{
     console.log("Reaction enlevé");
 })
 
-client.on('message', message =>{
-    //Reaction part
+// client.on('message', message =>{
+//     //Reaction part
    
 
-    if(!message.content.startsWith(prefix)|| message.author.bot)return;
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
-    if(command === 'ping'){
-        client.command.get('ping').execute(message,args);
+//     if(!message.content.startsWith(prefix)|| message.author.bot)return;
+//     const args = message.content.slice(prefix.length).split(/ +/);
+//     const command = args.shift().toLowerCase();
+//     if(command === 'ping'){
+//         client.command.get('ping').execute(message,args);
 
-    }else if(command == 'henri' || command == 'Henri' || command == 'Henry'|| command == 'henry'){
-        client.command.get('trolling').execute(message,args);
-    }else if(command == 'help' || command == 'Help' || command == 'Commands' || command == 'Command'|| command == 'commands' || command == 'command'){
-        client.command.get('help').execute(message,args);
-    }else if(command == 'tennis' || command == 'Tennis' ){
-        client.command.get('tennis').execute(message,args);
-    }
+//     }else if(command == 'henri' || command == 'Henri' || command == 'Henry'|| command == 'henry'){
+//         client.command.get('trolling').execute(message,args);
+//     }else if(command == 'help' || command == 'Help' || command == 'Commands' || command == 'Command'|| command == 'commands' || command == 'command'){
+//         client.command.get('help').execute(message,args);
+//     }else if(command == 'tennis' || command == 'Tennis' ){
+//         client.command.get('tennis').execute(message,args);
+//     }
    
-});
+// });
 
 client.login(process.env.TOKEN);

@@ -18,8 +18,8 @@
   "homepage": "https://github.com/sn00wden/Discord_Bot#readme",
   "dependencies": {
     "discord": "^0.8.2",
-    "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0",
+    "discord.js": "^14.7.1",
+    "dotenv": "^8.6.0",
     "fs": "0.0.1-security"
   }
 }
