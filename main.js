@@ -1,13 +1,19 @@
 const {Client,Events, GatewayIntentBits} = require('discord.js');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.DirectMessageTyping, GatewayIntentBits.DirectMessageReactions] });
 require('dotenv').config();
 const prefix = '-';
 const id_channel = process.env.ID_CHANNEL;
 const id_serv = process.env.ID_SERV;
 
-//id message
+// My id
+const my_id = process.env.MY_ID;
 
+// Id log channel
+const id_log_channel = '1069908127811637340';
+const id_moderation_channel = '1069910049222303844';
+
+//id message
 const id_message_createch = '1069692895017324624'
 const id_message_roleLOL = '1069692998855692328'
 const id_message_yuumi = '1069693404897878078'
@@ -26,13 +32,55 @@ const yuumi_role = "1069645562439282778 ";
 const fs = require('fs');
 
 
+
+function SendDirectMessage(id_user,message){
+    client.guilds.cache.find(guild =>guild.id === id_serv).members.fetch(id_user).then(member =>{
+        member.send(message);
+
+    }).catch(err =>{
+        console.log("ERROR" + err);
+        Error("Server encountered error : " +err);
+    })
+}
+
+function LogInServer(message){
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_log_channel).send(message);
+}
+
+function Error(message){
+    LogInServer(message);
+}
+
+function LogInModeration(message){
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_moderation_channel).send(message);
+    // Then add reaction to the message
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_moderation_channel).messages.fetch().then(messages =>{
+        messages.last().react('✅');
+        messages.last().react('❌');
+    }).catch(err =>{
+        console.log("ERROR" + err);
+        Error("Server encountered error in adding reaction to moderation message : " +err);
+
+    })
+}
+
+
+
 client.once('ready',() =>{
     console.log("Bot is online !")
+    // send me a message when the bot is online
+    // SendDirectMessage(my_id,"Bot is online !")
+    LogInServer("Bot is online !")
+
 });
 
 client.once('end',() =>{
     console.log("Bot is offline !")
+    // SendDirectMessage(my_id,"Bot is offline !")
+    LogInServer("Bot is offline !")
 });
+
+
 
 client.on('ready',() =>{
     client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_createch).then(message =>{
@@ -42,6 +90,7 @@ client.on('ready',() =>{
         message.react('👎');
     }).catch(err =>{
         console.log("ERROR" + err);
+        Error("Server encountered error : " +err);
     })
     
     client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_roleLOL).then(message =>{
@@ -55,6 +104,7 @@ client.on('ready',() =>{
         
     }).catch(err =>{
         console.log("ERROR" + err);
+        Error("Server encountered error : " +err);
     })
     client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_channel).messages.fetch(id_message_yuumi).then(message =>{
             
@@ -63,9 +113,10 @@ client.on('ready',() =>{
             
         }).catch(err =>{
             console.log("ERROR" + err);
+            Error("Server encountered error : " +err);
         })
     
-})
+});
 
 client.on(Events.MessageReactionAdd,async (reaction,user) =>{
     console.log("Reaction ajouté");
@@ -126,14 +177,40 @@ client.on(Events.MessageReactionAdd,async (reaction,user) =>{
            });
         }else if(reaction.emoji.name === '👍'){ // createch
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+            SendDirectMessage(member,"Demande de rôle createch en attente de vérification");
+            LogInServer("Demande de rôle createch en attente de vérification pour " + member.displayName);
+            LogInModeration("Demande de rôle createch en attente de vérification pour " + member.displayName);
+            
+            }
+    
+        if(!user.bot){
+            reaction.users.remove(user.id);}
+
+    }
+    
+    // Check if a reaction has been added to a message in the channel moderation
+    if(reaction.message.channel.id === id_moderation_channel && !user.bot){
+        if(reaction.emoji.name === '✅'){ // accepter createch
+            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             member.roles.add(createch_role).then(mbr => {
                 console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
                 console.log("Role pas attribué");
             });
-            }
+            // SendDirectMessage(member,"Demande de rôle createch acceptée");
+            LogInServer("Demande de rôle createch acceptée pour " + member.displayName);
+            // LogInModeration("Demande de rôle createch acceptée pour " + member.displayName);
+        }else if(reaction.emoji.name === '❌'){ // refuser createch
+            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+            // SendDirectMessage(member,"Demande de rôle createch refusée");
+            LogInServer("Demande de rôle createch refusée pour " + member.displayName);
+            // LogInModeration("Demande de rôle createch refusée pour " + member.displayName);
+        }
         if(!user.bot){
-            reaction.users.remove(user.id);}
+            reaction.message.delete();
+        }
+        //Remove the message
+    
     }
 
     if(reaction.message.id === id_message_yuumi && !user.bot){
@@ -150,11 +227,14 @@ client.on(Events.MessageReactionAdd,async (reaction,user) =>{
             reaction.users.remove(user.id);}
     }
 
-})
+    
+});
+
+
 
 client.on('messageReactionRemove',(reaction,user) =>{
     console.log("Reaction enlevé");
-})
+});
 
 // client.on('message', message =>{
 //     //Reaction part
