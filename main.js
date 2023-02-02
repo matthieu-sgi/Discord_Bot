@@ -8,6 +8,7 @@ const id_serv = process.env.ID_SERV;
 
 // My id
 const my_id = process.env.MY_ID;
+const len_id = my_id.length;
 
 // Id log channel
 const id_log_channel = '1069908127811637340';
@@ -177,8 +178,8 @@ client.on(Events.MessageReactionAdd,async (reaction,user) =>{
         }else if(reaction.emoji.name === '👍'){ // createch
             var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
             SendDirectMessage(member,"Demande de rôle createch en attente de vérification");
-            LogInServer("Demande de rôle createch en attente de vérification pour " + member.displayName);
-            LogInModeration("Demande de rôle createch en attente de vérification pour " + member.displayName);
+            LogInServer("Demande de rôle createch en attente de vérification pour " + member.displayName + " : " + member.id);
+            LogInModeration("Demande de rôle createch en attente de vérification pour " + member.displayName + " : " + member.id);
             
             }
     
@@ -190,7 +191,16 @@ client.on(Events.MessageReactionAdd,async (reaction,user) =>{
     // Check if a reaction has been added to a message in the channel moderation
     if(reaction.message.channel.id === id_moderation_channel && !user.bot){
         if(reaction.emoji.name === '✅'){ // accepter createch
-            var member = reaction.message.guild.members.cache.find(member => member.id === user.id);
+            var temp_message_content = reaction.message.content;
+            var temp_member_id = temp_message_content.substring(temp_message_content.indexOf(" : ") + 3);
+            console.log("temp_member_id : " + temp_member_id);
+            //fetch the member id from the message's content and add the role
+            var member = reaction.message.guild.members.cache.find(member => member.id === temp_member_id);
+
+
+            
+
+
             member.roles.add(createch_role).then(mbr => {
                 console.log("Role attribué avec succès pour " + mbr.displayName);
             }).catch(() => {
