@@ -52,11 +52,10 @@ function Error(message){
 }
 
 function LogInModeration(message){
-    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_moderation_channel).send(message);
-    // Then add reaction to the message
-    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_moderation_channel).messages.fetch().then(messages =>{
-        messages.last().react('✅');
-        messages.last().react('❌');
+    client.guilds.cache.find(guild =>guild.id === id_serv).channels.cache.find(channel => channel.id === id_moderation_channel).send(message).then(message =>{
+        // Then add reaction to the message
+        message.react('✅');
+        message.react('❌');
     }).catch(err =>{
         console.log("ERROR" + err);
         Error("Server encountered error in adding reaction to moderation message : " +err);
